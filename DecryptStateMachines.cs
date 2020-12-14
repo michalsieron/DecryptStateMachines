@@ -6,7 +6,18 @@ using System.Text;
 public class Program {
 	private static void Main(string[] args) {
 		byte[] decrypted;
-		string filePath = args.Length > 0 ? args[0] : "automat.usf";
+		if (args.Length < 1) {
+			Console.Error.WriteLine("Program expects exactly one argument (file path)!");
+			return;
+		}
+
+		string filePath = args[0];
+
+		if (!File.Exists(filePath)) {
+			Console.Error.WriteLine("File " + filePath + " was not found!");
+			return;
+		}
+
 		byte[] encrypted = File.ReadAllBytes(filePath);
 		byte[] bytes = Encoding.UTF8.GetBytes("1234567812345678");
 		byte[] bytes2 = new PasswordDeriveBytes("statemachines", null).GetBytes(256 / 8);
